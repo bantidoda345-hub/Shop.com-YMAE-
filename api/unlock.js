@@ -1,6 +1,6 @@
 export default function handler(req,res){
 
-const PIN = '9009';
+const PIN = process.env.WEB_PASSWORD;
 
 if(req.method !== 'POST'){
 return res.status(405).json({
