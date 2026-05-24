@@ -16,11 +16,74 @@ font-family:'Segoe UI',sans-serif;
 }
 
 body{
-
 background:linear-gradient(135deg,#020617,#0f172a,#111827);
 min-height:100vh;
 color:white;
 overflow-x:hidden;
+}
+
+/* LOGIN SCREEN */
+#loginScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100vh;
+background:#020617;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999999;
+padding:20px;
+}
+
+.login-box{
+background:rgba(255,255,255,0.06);
+border:1px solid rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+padding:40px;
+border-radius:30px;
+width:100%;
+max-width:420px;
+text-align:center;
+}
+
+.login-box h1{
+font-size:35px;
+margin-bottom:12px;
+}
+
+.login-box p{
+color:#cbd5e1;
+margin-bottom:25px;
+}
+
+.login-box input{
+width:100%;
+padding:18px;
+border:none;
+border-radius:18px;
+background:#111827;
+color:white;
+font-size:16px;
+margin-bottom:18px;
+}
+
+.login-box button{
+width:100%;
+padding:18px;
+border:none;
+border-radius:18px;
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+#error{
+margin-top:15px;
+color:#ef4444;
 }
 
 /* TOP HEADER */
@@ -301,6 +364,30 @@ min-height:190px;
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+
+<div class="login-box">
+
+<h1>YMAE Access</h1>
+
+<p>Secure Premium Verification Portal</p>
+
+<input
+type="password"
+id="sitePassword"
+placeholder="Enter Password">
+
+<button onclick="checkPassword()">
+Open Website
+</button>
+
+<p id="error"></p>
+
+</div>
+
+</div>
+
 <!-- HEADER -->
 <header class="header">
 
@@ -337,7 +424,6 @@ Cashback, Admin Panel, Product Offers and Settings.
 
 <div class="grid">
 
-<!-- EMI -->
 <a href="emi.html" class="card emi">
 
 <div class="card-top">
@@ -357,7 +443,6 @@ Cashback, Admin Panel, Product Offers and Settings.
 
 </a>
 
-<!-- CASHBACK -->
 <a href="cashback.html" class="card cashback">
 
 <div class="card-top">
@@ -377,7 +462,6 @@ Cashback, Admin Panel, Product Offers and Settings.
 
 </a>
 
-<!-- ADMIN -->
 <a href="admin.html" class="card admin">
 
 <div class="card-top">
@@ -397,7 +481,6 @@ Cashback, Admin Panel, Product Offers and Settings.
 
 </a>
 
-<!-- SETTINGS -->
 <a href="settings.html" class="card setting">
 
 <div class="card-top">
@@ -417,7 +500,6 @@ Cashback, Admin Panel, Product Offers and Settings.
 
 </a>
 
-<!-- OFFERS -->
 <a href="offers.html" class="card offer">
 
 <div class="card-top">
@@ -447,6 +529,40 @@ Cashback, Admin Panel, Product Offers and Settings.
 YMAE Company • Secure Premium Dashboard • Responsive Desktop & Android Layout
 </p>
 </footer>
+
+<script>
+
+async function checkPassword(){
+
+let password = document.getElementById('sitePassword').value;
+
+const res = await fetch('/api/verify',{
+
+method:'POST',
+
+headers:{
+'Content-Type':'application/json'
+},
+
+body:JSON.stringify({password})
+
+});
+
+const data = await res.json();
+
+if(data.success){
+
+document.getElementById('loginScreen').style.display='none';
+
+}else{
+
+document.getElementById('error').innerText='Wrong Password';
+
+}
+
+}
+
+</script>
 
 </body>
 </html>
