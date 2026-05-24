@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YMAE Finance Panel</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b,#334155,#475569);
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+}
+
+.page{
+display:none;
+min-height:100vh;
+padding:15px;
+justify-content:center;
+align-items:center;
+}
+
+.active{
+display:flex;
+}
+
+.box{
+width:100%;
+max-width:450px;
+min-height:550px;
+background:linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05));
+backdrop-filter:blur(20px);
+padding:35px 25px;
+border-radius:25px;
+border:1px solid rgba(255,255,255,0.15);
+box-shadow:0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+position:relative;
+overflow:hidden;
+}
+
+.box::before{
+content:'';
+position:absolute;
+top:0;
+left:0;
+right:0;
+height:4px;
+background:linear-gradient(90deg,#22c55e,#3b82f6,#ef4444);
+}
+
+.logo{
+text-align:center;
+font-size:clamp(32px,6vw,48px);
+font-weight:900;
+margin-bottom:15px;
+background:linear-gradient(45deg,#22c55e,#3b82f6);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+background-clip:text;
+text-shadow:0 0 20px rgba(34,197,94,0.3);
+}
+
+.title{
+text-align:center;
+font-size:clamp(20px,4vw,28px);
+margin-bottom:30px;
+font-weight:600;
+letter-spacing:1px;
+}
+
+input,select{
+width:100%;
+padding:18px 20px;
+margin-top:15px;
+border:none;
+outline:none;
+border-radius:16px;
+background:linear-gradient(145deg,rgba(255,255,255,0.15),rgba(255,255,255,0.08));
+color:white;
+font-size:clamp(14px,3.5vw,16px);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.1);
+transition:all 0.3s ease;
+text-transform:uppercase;
+}
+
+input:focus,select:focus{
+background:linear-gradient(145deg,rgba(255,255,255,0.25),rgba(255,255,255,0.15));
+box-shadow:0 0 20px rgba(255,255,255,0.2);
+transform:translateY(-2px);
+}
+
+input::placeholder{
+color:#ccc;
+text-transform:none;
+}
+
+button{
+width:100%;
+padding:18px;
+margin-top:25px;
+border:none;
+border-radius:16px;
+background:linear-gradient(45deg,#22c55e,#16a34a);
+color:white;
+font-size:clamp(16px,4vw,18px);
+font-weight:700;
+cursor:pointer;
+transition:all 0.3s ease;
+box-shadow:0 8px 25px rgba(34,197,94,0.4);
+position:relative;
+overflow:hidden;
+}
+
+button:hover{
+transform:translateY(-3px);
+box-shadow:0 12px 35px rgba(34,197,94,0.6);
+}
+
+button:active{
+transform:translateY(-1px);
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+padding:18px 0;
+border-bottom:1px solid rgba(255,255,255,0.1);
+font-size:clamp(14px,3.5vw,16px);
+font-weight:500;
+}
+
+.green{
+color:#22c55e;
+font-weight:700;
+font-size:clamp(16px,4vw,18px);
+}
+
+.process{
+text-align:center;
+gap:10px;
+}
+
+.loader{
+width:clamp(70px,18vw,100px);
+height:clamp(70px,18vw,100px);
+border:8px solid rgba(255,255,255,0.2);
+border-top:8px solid #22c55e;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto;
+margin-bottom:25px;
+box-shadow:0 0 30px rgba(34,197,94,0.4);
+}
+
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
+
+.process h2{
+font-size:clamp(20px,5vw,26px);
+margin-bottom:20px;
+}
+
+.process p{
+margin:8px 0;
+color:#ddd;
+font-size:clamp(13px,3vw,15px);
+}
+
+.notice{
+margin-top:25px;
+padding:25px;
+border-radius:20px;
+background:linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));
+border:1px solid rgba(255,255,255,0.1);
+line-height:26px;
+font-size:clamp(13px,3vw,14px);
+color:#ddd;
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.notice h3{
+margin-bottom:15px;
+color:#22c55e;
+font-size:clamp(16px,4vw,18px);
+font-weight:700;
+text-align:center;
+border-bottom:2px solid #22c55e;
+padding-bottom:10px;
+}
+
+.warning{
+color:#ef4444 !important;
+font-weight:700;
+font-size:clamp(14px,3.5vw,15px);
+}
+
+.footer{
+position:fixed;
+bottom:10px;
+left:0;
+right:0;
+text-align:center;
+font-size:11px;
+color:#888;
+z-index:1000;
+padding:10px;
+background:rgba(0,0,0,0.3);
+border-radius:20px;
+margin:0 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+<div class="box">
+<div class="logo">YMAE</div>
+<div class="title">EMI Finance Panel</div>
+<input type="password" id="pin" placeholder="Enter Security PIN">
+<button onclick="unlockPanel()">🔓 Unlock Panel</button>
+</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+<div class="box">
+<div class="title">Customer Details</div>
+<input type="text" id="name" placeholder="Customer Full Name">
+<input type="tel" id="phone" placeholder="Phone Number">
+<input type="number" id="aadhaar" placeholder="Aadhaar Number">
+<input type="text" id="pan" placeholder="PAN Number">
+<button onclick="goFinance()">➤ Continue to Finance</button>
+</div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+<div class="box">
+<div class="title">YMAE Finance</div>
+<input type="text" id="product" placeholder="Product Name">
+<input type="number" id="mrp" placeholder="Product MRP Amount">
+<select id="months">
+<option value="4">4 Months EMI</option>
+<option value="5">5 Months EMI</option>
+<option value="6">6 Months EMI</option>
+</select>
+<input type="text" id="ymcode" placeholder="Enter YM Code">
+<button onclick="startProcessing()">💳 Generate EMI</button>
+</div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+<div class="box process">
+<div class="loader"></div>
+<h2>Processing Application</h2>
+<p>📤 Uploading Customer Details...</p>
+<p>✅ Verifying KYC Documents...</p>
+<p>🔍 Checking Credit Eligibility...</p>
+<p>💰 Calculating EMI Structure...</p>
+<p>✅ <strong>Approval Generated!</strong></p>
+</div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="page5">
+<div class="box">
+<div class="title">✅ EMI APPROVED</div>
+<div class="row">
+<span>👤 Customer</span>
+<span id="rname"></span>
+</div>
+<div class="row">
+<span>📦 Product</span>
+<span id="rproduct"></span>
+</div>
+<div class="row">
+<span>💰 Product MRP</span>
+<span id="rprice"></span>
+</div>
+<div class="row">
+<span>🧾 GST (18%)</span>
+<span>₹800</span>
+</div>
+<div class="row">
+<span>📄 Documentation</span>
+<span>₹700</span>
+</div>
+<div class="row">
+<span>⚙️ Processing Fee</span>
+<span>₹500</span>
+</div>
+<div class="row green">
+<span>💎 TOTAL FINANCE</span>
+<span id="rtotal"></span>
+</div>
+<div class="row green">
+<span>🎯 DOWN PAYMENT</span>
+<span id="rdown"></span>
+</div>
+<div class="row green">
+<span>📅 MONTHLY EMI</span>
+<span id="remi"></span>
+</div>
+<div class="row green">
+<span>⏰ TENURE</span>
+<span id="rmonths"></span>
+</div>
+<div class="notice">
+<h3>⚠️ IMPORTANT NOTIFICATION</h3>
+<p><span class="warning">🚨 NON-PAYMENT CONSEQUENCES:</span></p>
+<p>• <strong>₹500 penalty per day</strong> after due date</p>
+<p>• <strong>Phone will be locked automatically</strong> after 15 days</p>
+<p>• <strong>CIBIL score damaged</strong> permanently</p>
+<p>• <strong>Legal recovery action</strong> after 30 days</p>
+<p>• <strong>Blacklisted from all finance</strong></p>
+
+<h3>✅ PAYMENT INSTRUCTIONS</h3>
+<p>• EMI due on <strong>5th of every month</strong></p>
+<p>• Pay via <strong>UPI / Bank Transfer</strong></p>
+<p>• Reference: <strong>YM-[Customer Phone]</strong></p>
+<p>• Contact: <strong>1800-YMAE-EMI</strong></p>
+</div>
+</div>
+</div>
+
+<div class="footer">
+© 2024 YMAE Finance Pvt Ltd | All Rights Reserved | Licensed by RBI
+</div>
+
+<script>
+function showPage(pageId){
+document.querySelectorAll('.page').forEach(page=>page.classList.remove('active'));
+document.getElementById(pageId).classList.add('active');
+document.body.scrollTop = 0;
+}
+
+async function unlockPanel(){
+
+const pin=document.getElementById('pin').value;
+
+try{
+
+const response = await fetch('/api/unlock',{
+
+method:'POST',
+
+headers:{
+'Content-Type':'application/json'
+},
+
+body:JSON.stringify({
+pin
+})
+
+});
+
+const data = await response.json();
+
+if(data.success){
+
+showPage('page2');
+
+}else{
+
+alert("❌ Invalid Security PIN!");
+
+document.getElementById('pin').value='';
+
+document.getElementById('pin').focus();
+
+}
+
+}catch(err){
+
+alert("⚠️ Server Error");
+
+}
+
+}
+
+function goFinance(){
+if(!document.getElementById('name').value || !document.getElementById('phone').value){
+alert('⚠️ Please enter Customer Name & Phone Number');
+return;
+}
+showPage('page3');
+}
+
+function startProcessing(){
+if(!document.getElementById('mrp').value || !document.getElementById('ymcode').value){
+alert('⚠️ Enter Product MRP & YM Code');
+return;
+}
+showPage('page4');
+setTimeout(generateResult,4000);
+}
+
+function generateResult(){
+const name=document.getElementById('name').value;
+const product=document.getElementById('product').value;
+const mrp=parseInt(document.getElementById('mrp').value)||0;
+const months=parseInt(document.getElementById('months').value);
+const ym=document.getElementById('ymcode').value.trim().toUpperCase();
+
+let down=0;
+
+// 🔥 HIDDEN 1-20 + A SYSTEM (CODE NOT SHOWN)
+let num = parseInt(ym.replace(/[^0-9]/g,'')) || 0;
+let hasA = ym.includes('A');
+
+// 1-20 SABHI DIGITS + A=500
+if(num >= 1 && num <= 20){
+    down = num * 1000;
+    if(hasA) down += 500;
+    
+    // INVALID CODE CHECK
+    if(num > 20 && !hasA) {
+        alert('⚠️ Invalid YM Code! Use 1-20 or 1A-20A');
+        showPage('page3');
+        return;
+    }
+}
+
+// FINAL CALCULATION
+const total = mrp + 2000;
+const remain = Math.max(0, total - down);
+const emi = Math.ceil(remain / months);
+
+// UPDATE RESULTS (CODE HIDDEN - ONLY AMOUNT)
+document.getElementById('rname').innerText=name;
+document.getElementById('rproduct').innerText=product;
+document.getElementById('rprice').innerText="₹"+mrp.toLocaleString();
+document.getElementById('rtotal').innerText="₹"+total.toLocaleString();
+document.getElementById('rdown').innerText="₹"+down.toLocaleString();
+document.getElementById('remi').innerText="₹"+emi.toLocaleString();
+document.getElementById('rmonths').innerText=months+" Months";
+
+showPage('page5');
+}
+</script>
+
+</body>
+  </html>

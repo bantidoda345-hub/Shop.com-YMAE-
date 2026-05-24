@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YMAE Cashback</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#020617,#0f172a,#111827);
+min-height:100vh;
+color:white;
+padding:20px;
+}
+
+.container{
+max-width:850px;
+margin:auto;
+}
+
+.header{
+text-align:center;
+margin-bottom:30px;
+}
+
+.header h1{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.header p{
+color:#cbd5e1;
+}
+
+.box{
+background:rgba(255,255,255,0.06);
+border:1px solid rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+padding:30px;
+border-radius:30px;
+margin-bottom:25px;
+}
+
+.title{
+font-size:28px;
+margin-bottom:25px;
+}
+
+.input-box{
+margin-bottom:18px;
+}
+
+.input-box label{
+display:block;
+margin-bottom:10px;
+color:#cbd5e1;
+}
+
+.input-box input{
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+background:#0f172a;
+color:white;
+font-size:16px;
+}
+
+.check{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:15px;
+}
+
+button{
+width:100%;
+padding:18px;
+border:none;
+border-radius:18px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+color:white;
+margin-top:20px;
+}
+
+.processing{
+display:none;
+text-align:center;
+padding:40px;
+}
+
+.spinner{
+width:70px;
+height:70px;
+border:7px solid rgba(255,255,255,0.2);
+border-top:7px solid #38bdf8;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto auto 20px;
+}
+
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
+
+.success{
+display:none;
+}
+
+.discount-box{
+background:linear-gradient(135deg,#16a34a,#22c55e);
+padding:30px;
+border-radius:25px;
+text-align:center;
+margin-bottom:25px;
+}
+
+.discount-box h2{
+font-size:45px;
+margin-top:10px;
+}
+
+.detail{
+display:flex;
+justify-content:space-between;
+background:#0f172a;
+padding:15px 18px;
+border-radius:15px;
+margin-bottom:12px;
+}
+
+.claim-page{
+display:none;
+text-align:center;
+}
+
+.claim-page h2{
+font-size:40px;
+margin-bottom:20px;
+}
+
+.claim-page p{
+line-height:1.9;
+color:#cbd5e1;
+font-size:17px;
+}
+
+@media(max-width:768px){
+
+.header h1{
+font-size:30px;
+}
+
+.box{
+padding:22px;
+}
+
+.title{
+font-size:24px;
+}
+
+.detail{
+flex-direction:column;
+gap:8px;
+}
+
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>YMAE Company</h1>
+<p>Premium Cashback Verification Portal</p>
+</div>
+
+<!-- CUSTOMER SECTION -->
+<div class="box" id="customerBox">
+<h2 class="title">Customer Details</h2>
+
+<div class="input-box">
+<label>Customer Name</label>
+<input type="text" id="name" placeholder="Enter customer name">
+</div>
+
+<div class="input-box">
+<label>Phone Number</label>
+<input type="number" id="phone" placeholder="9876543210">
+</div>
+
+<div class="input-box">
+<label>Gmail</label>
+<input type="email" id="gmail" value="YMAE Personal Company" readonly>
+</div>
+
+<div class="input-box">
+<label>PAN Number (Optional)</label>
+<input type="text" id="pan" placeholder="ABCDE1234F">
+</div>
+
+<div class="input-box">
+<label>Aadhaar Number</label>
+<input type="number" id="aadhaar" placeholder="123456789012">
+</div>
+
+<div class="check">
+<input type="checkbox" id="agree">
+<label for="agree">I Agree Terms & Conditions</label>
+</div>
+
+<button onclick="nextProduct()">Submit Customer</button>
+</div>
+
+<!-- PRODUCT SECTION -->
+<div class="box" id="productBox" style="display:none;">
+<h2 class="title">Product Details</h2>
+
+<div class="input-box">
+<label>Product Name</label>
+<input type="text" id="product" placeholder="iPhone 15 Pro Max">
+</div>
+
+<div class="input-box">
+<label>Model Number</label>
+<input type="text" id="model" placeholder="A3108">
+</div>
+
+<div class="input-box">
+<label>MRP</label>
+<input type="number" id="mrp" placeholder="Enter MRP">
+</div>
+
+<button onclick="nextCode()">Submit Product</button>
+</div>
+
+<!-- PROCESSING -->
+<div class="box processing" id="processing">
+<div class="spinner"></div>
+<h2>Processing Verification...</h2>
+<p>Please wait while YMAE verifies your details.</p>
+</div>
+
+<!-- CODE SECTION -->
+<div class="box" id="codeBox" style="display:none;">
+<h2 class="title">Manual Discount Verification</h2>
+
+<div class="input-box">
+<label>Enter Discount Amount</label>
+<input type="number" id="discount" placeholder="Enter discount amount">
+</div>
+
+<button onclick="verifyDiscount()">Verify Discount</button>
+</div>
+
+<!-- SUCCESS -->
+<div class="box success" id="successBox">
+
+<div class="discount-box">
+<h3>🎉 CONGRATULATIONS 🎉</h3>
+<h2 id="discountShow">₹0</h2>
+<p>Discount Approved Successfully</p>
+</div>
+
+<div class="detail"><span>Customer Name</span><span id="sName"></span></div>
+<div class="detail"><span>Phone Number</span><span id="sPhone"></span></div>
+<div class="detail"><span>Gmail</span><span id="sGmail"></span></div>
+<div class="detail"><span>PAN Number</span><span id="sPan"></span></div>
+<div class="detail"><span>Aadhaar Number</span><span id="sAadhaar"></span></div>
+<div class="detail"><span>Product</span><span id="sProduct"></span></div>
+<div class="detail"><span>Model Number</span><span id="sModel"></span></div>
+<div class="detail"><span>MRP</span><span id="sMrp"></span></div>
+<div class="detail"><span>Discount</span><span id="sDiscount"></span></div>
+<div class="detail"><span>Final Price</span><span id="sFinal"></span></div>
+
+<div class="discount-box" style="margin-top:25px;">
+<h3>Only 12 Hours Offer</h3>
+<p>Personal YMAE Company Exclusive Cashback Verification</p>
+</div>
+
+<button onclick="claimOffer()">Claim Offer</button>
+
+</div>
+
+<!-- CLAIM PAGE -->
+<div class="box claim-page" id="claimPage">
+<h2>Offer Activated Successfully</h2>
+
+<p>
+Your cashback verification has been completed successfully with YMAE Company.
+This exclusive premium offer is available for limited customers only.
+Thank you for choosing YMAE Personal Company verification services.
+
+<br><br>
+The approved discount amount will remain active for the next 12 hours only.
+Please contact your YMAE support executive for complete activation process.
+</p>
+
+<button onclick="location.reload()">Back To Home</button>
+
+</div>
+
+</div>
+
+<script>
+
+function nextProduct(){
+
+let name = document.getElementById('name').value;
+let phone = document.getElementById('phone').value;
+let aadhaar = document.getElementById('aadhaar').value;
+let agree = document.getElementById('agree').checked;
+
+if(name=='' || phone=='' || aadhaar=='' || !agree){
+alert('Please fill all required details');
+return;
+}
+
+document.getElementById('customerBox').style.display='none';
+document.getElementById('productBox').style.display='block';
+
+}
+
+function nextCode(){
+
+let product = document.getElementById('product').value;
+let model = document.getElementById('model').value;
+let mrp = document.getElementById('mrp').value;
+
+if(product=='' || model=='' || mrp==''){
+alert('Please fill product details');
+return;
+}
+
+document.getElementById('productBox').style.display='none';
+document.getElementById('processing').style.display='block';
+
+setTimeout(()=>{
+
+document.getElementById('processing').style.display='none';
+document.getElementById('codeBox').style.display='block';
+
+},2500);
+
+}
+
+function verifyDiscount(){
+
+let dis = Number(document.getElementById('discount').value);
+let mrp = Number(document.getElementById('mrp').value);
+let final = mrp - dis;
+
+if(dis==''){
+alert('Enter discount amount');
+return;
+}
+
+document.getElementById('codeBox').style.display='none';
+document.getElementById('successBox').style.display='block';
+
+// CUSTOMER
+
+document.getElementById('sName').innerText = document.getElementById('name').value;
+document.getElementById('sPhone').innerText = document.getElementById('phone').value;
+document.getElementById('sGmail').innerText = document.getElementById('gmail').value;
+document.getElementById('sPan').innerText = document.getElementById('pan').value || 'Not Provided';
+document.getElementById('sAadhaar').innerText = document.getElementById('aadhaar').value;
+
+// PRODUCT
+
+document.getElementById('sProduct').innerText = document.getElementById('product').value;
+document.getElementById('sModel').innerText = document.getElementById('model').value;
+document.getElementById('sMrp').innerText = '₹'+mrp;
+document.getElementById('sDiscount').innerText = '- ₹'+dis;
+document.getElementById('sFinal').innerText = '₹'+final;
+
+// DISCOUNT
+
+document.getElementById('discountShow').innerText = '₹'+dis;
+
+}
+
+function claimOffer(){
+
+document.getElementById('successBox').style.display='none';
+document.getElementById('claimPage').style.display='block';
+
+}
+
+</script>
+
+</body>
+</html>
