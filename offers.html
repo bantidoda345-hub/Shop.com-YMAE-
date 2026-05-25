@@ -1,70 +1,1097 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>YMAE Offers</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YMAE Premium Cashback Verification</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
 body{
-font-family:sans-serif;
 background:#020617;
 color:white;
-padding:20px;
+overflow-x:hidden;
 }
-.container{
-max-width:1200px;
-margin:auto;
+
+/* BACKGROUND */
+
+body::before{
+content:'';
+position:fixed;
+width:650px;
+height:650px;
+background:rgba(37,99,235,0.16);
+filter:blur(130px);
+top:-250px;
+left:-250px;
+z-index:-1;
 }
+
+body::after{
+content:'';
+position:fixed;
+width:650px;
+height:650px;
+background:rgba(124,58,237,0.16);
+filter:blur(130px);
+bottom:-250px;
+right:-250px;
+z-index:-1;
+}
+
+/* TOPBAR */
+
+.topbar{
+width:100%;
+padding:20px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(16px);
+border-bottom:1px solid rgba(255,255,255,0.08);
+position:sticky;
+top:0;
+z-index:999;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.logo-box{
+width:75px;
+height:75px;
+border-radius:24px;
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:32px;
+box-shadow:0 15px 35px rgba(37,99,235,0.45);
+}
+
+.logo-text h1{
+font-size:34px;
+font-weight:900;
+}
+
+.logo-text p{
+font-size:14px;
+color:#cbd5e1;
+}
+
+.status{
+padding:12px 20px;
+border-radius:16px;
+background:rgba(34,197,94,0.15);
+color:#4ade80;
+font-weight:800;
+font-size:14px;
+}
+
+/* PAGE */
+
+.page{
+display:none;
+min-height:100vh;
+padding:50px 20px;
+justify-content:center;
+align-items:center;
+}
+
+.active{
+display:flex;
+}
+
+/* BOX */
+
+.box{
+width:100%;
+max-width:1050px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,0.08);
+padding:45px;
+border-radius:38px;
+box-shadow:0 30px 60px rgba(0,0,0,0.5);
+position:relative;
+overflow:hidden;
+}
+
+.box::before{
+content:'';
+position:absolute;
+width:300px;
+height:300px;
+background:rgba(255,255,255,0.03);
+border-radius:50%;
+top:-120px;
+right:-100px;
+}
+
+/* TITLE */
+
+.title{
+font-size:44px;
+font-weight:900;
+margin-bottom:10px;
+}
+
+.subtitle{
+font-size:16px;
+color:#cbd5e1;
+line-height:1.9;
+margin-bottom:35px;
+}
+
+/* GRID */
+
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:25px;
+grid-template-columns:1fr 1fr;
+gap:22px;
 }
-.card{
-background:#111827;
-padding:25px;
-border-radius:25px;
+
+.input-box{
+display:flex;
+flex-direction:column;
 }
-.card img{
-width:100%;
-border-radius:18px;
-height:200px;
-object-fit:cover;
+
+.input-box label{
+margin-bottom:10px;
+font-size:15px;
+color:#cbd5e1;
+font-weight:700;
 }
-button{
-width:100%;
-padding:15px;
+
+.input-box input{
+padding:18px;
 border:none;
-border-radius:14px;
-background:#f59e0b;
+outline:none;
+border-radius:18px;
+background:rgba(255,255,255,0.08);
 color:white;
-font-weight:bold;
-margin-top:15px;
+font-size:15px;
+border:1px solid rgba(255,255,255,0.08);
 }
+
+.input-box input::placeholder{
+color:#94a3b8;
+}
+
+.full{
+grid-column:1/3;
+}
+
+/* CHECK */
+
+.check{
+display:flex;
+align-items:center;
+gap:12px;
+margin-top:20px;
+color:#cbd5e1;
+}
+
+/* BUTTON */
+
+.btn{
+width:100%;
+padding:18px;
+border:none;
+border-radius:18px;
+margin-top:28px;
+font-size:17px;
+font-weight:900;
+cursor:pointer;
+color:white;
+transition:0.3s;
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+box-shadow:0 18px 35px rgba(37,99,235,0.35);
+}
+
+.btn:hover{
+transform:translateY(-3px);
+}
+
+/* LOADER */
+
+.loader-area{
+text-align:center;
+padding:40px 0;
+}
+
+.loader{
+width:100px;
+height:100px;
+border-radius:50%;
+border:10px solid rgba(255,255,255,0.08);
+border-top:10px solid #3b82f6;
+margin:auto;
+animation:spin 1s linear infinite;
+margin-top:35px;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+/* SUCCESS */
+
+.success{
+text-align:center;
+margin-bottom:35px;
+}
+
+.success h2{
+font-size:62px;
+font-weight:900;
+}
+
+.success p{
+margin-top:12px;
+font-size:18px;
+color:#cbd5e1;
+}
+
+/* PREMIUM CARD */
+
+.discount-card{
+background:linear-gradient(135deg,#1e3a8a,#2563eb,#7c3aed);
+padding:45px;
+border-radius:38px;
+margin-top:25px;
+text-align:center;
+box-shadow:0 30px 60px rgba(37,99,235,0.4);
+position:relative;
+overflow:hidden;
+}
+
+.discount-card::before{
+content:'';
+position:absolute;
+width:260px;
+height:260px;
+background:rgba(255,255,255,0.08);
+border-radius:50%;
+top:-120px;
+right:-80px;
+}
+
+.discount-card h3{
+font-size:38px;
+margin-bottom:18px;
+position:relative;
+z-index:2;
+}
+
+.discount-amount{
+font-size:78px;
+font-weight:900;
+position:relative;
+z-index:2;
+}
+
+/* FINAL GRID */
+
+.final-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:22px;
+margin-top:30px;
+}
+
+.detail{
+background:rgba(255,255,255,0.05);
+padding:28px;
+border-radius:28px;
+}
+
+.detail h4{
+margin-bottom:18px;
+font-size:24px;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+padding:14px 0;
+border-bottom:1px solid rgba(255,255,255,0.06);
+font-size:15px;
+}
+
+/* OFFER */
+
+.offer-box{
+margin-top:35px;
+padding:38px;
+border-radius:35px;
+background:linear-gradient(135deg,#7c2d12,#ea580c,#dc2626);
+box-shadow:0 25px 55px rgba(220,38,38,0.35);
+}
+
+.offer-box h3{
+font-size:38px;
+margin-bottom:18px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.box{
+padding:28px 20px;
+}
+
+.grid,
+.final-grid{
+grid-template-columns:1fr;
+}
+
+.full{
+grid-column:auto;
+}
+
+.title{
+font-size:32px;
+}
+
+.discount-amount{
+font-size:52px;
+}
+
+.success h2{
+font-size:42px;
+}
+
+.topbar{
+padding:18px;
+}
+
+.logo-text h1{
+font-size:24px;
+}
+
+}
+
 </style>
 </head>
 <body>
-<div class="container">
-<h1>YMAE Product Offers</h1>
-<br>
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<div class="logo">
+
+<div class="logo-box">
+<i class="fa-solid fa-shield-halved"></i>
+</div>
+
+<div class="logo-text">
+<h1>YMAE Company</h1>
+<p>Premium Cashback Verification</p>
+</div>
+
+</div>
+
+<div class="status">
+LIVE SYSTEM
+</div>
+
+</div>
+
+<!-- PAGE 1 -->
+
+<section class="page active" id="page1">
+
+<div class="box">
+
+<div class="title">Customer Verification</div>
+
+<div class="subtitle">
+Fill customer information for secure cashback activation system.
+</div>
+
 <div class="grid">
-<div class="card">
-<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9">
-<h2>iPhone Offer</h2>
-<p>Flat ₹5000 Cashback</p>
-<button>Claim Offer</button>
+
+<div class="input-box">
+<label>Customer Name</label>
+<input type="text" id="name" placeholder="Enter Full Name">
 </div>
-<div class="card">
-<img src="https://images.unsplash.com/photo-1580910051074-3eb694886505">
-<h2>AC Offer</h2>
-<p>No Cost EMI Available</p>
-<button>Claim Offer</button>
+
+<div class="input-box">
+<label>Phone Number</label>
+<input type="number" id="phone" placeholder="9876543210">
 </div>
-<div class="card">
-<img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef">
-<h2>Laptop Offer</h2>
-<p>Student Discount Available</p>
-<button>Claim Offer</button>
+
+<div class="input-box">
+<label>Gmail</label>
+<input type="email" value="YMAE Personal Company" readonly>
 </div>
+
+<div class="input-box">
+<label>PAN Number</label>
+<input type="text" id="pan" placeholder="Optional">
 </div>
+
+<div class="input-box full">
+<label>Aadhaar Number</label>
+<input type="number" id="aadhaar" placeholder="Enter Aadhaar Number">
 </div>
+
+</div>
+
+<div class="check">
+<input type="checkbox" id="agree">
+<span>I agree to secure verification process</span>
+</div>
+
+<button class="btn" onclick="goProduct()">
+Submit Customer Details
+</button>
+
+</div>
+
+</section>
+
+<!-- PAGE 2 -->
+
+<section class="page" id="page2">
+
+<div class="box">
+
+<div class="title">Product Details</div>
+
+<div class="subtitle">
+Enter product details for cashback processing.
+</div>
+
+<div class="grid">
+
+<div class="input-box">
+<label>Product Name</label>
+<input type="text" id="product">
+</div>
+
+<div class="input-box">
+<label>Model Number</label>
+<input type="text" id="model">
+</div>
+
+<div class="input-box">
+<label>Cash/Card</label>
+<input type="text" id="cash">
+</div>
+
+<div class="input-box">
+<label>MOP Amount</label>
+<input type="number" id="mop">
+</div>
+
+</div>
+
+<button class="btn" onclick="goCode()">
+Continue Verification
+</button>
+
+</div>
+
+</section>
+
+<!-- VERIFY PAGE -->
+
+<section class="page" id="verifyPage">
+
+<div class="box loader-area">
+
+<div style="
+width:160px;
+height:160px;
+margin:auto;
+border-radius:40px;
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:70px;
+box-shadow:0 25px 50px rgba(37,99,235,0.45);
+">
+
+<i class="fa-solid fa-shield-check"></i>
+
+</div>
+
+<h2 style="
+font-size:58px;
+font-weight:900;
+margin-top:35px;
+">
+
+Verifying Product
+
+</h2>
+
+<p style="
+margin-top:20px;
+font-size:18px;
+line-height:2.2;
+color:#cbd5e1;
+">
+
+Checking Product Database...<br>
+Matching Customer Details...<br>
+Generating Cashback Security...<br>
+Activating Premium Cashback...
+
+</p>
+
+<div class="loader"></div>
+
+</div>
+
+</section>
+
+<!-- PAGE 3 -->
+
+<section class="page" id="page3">
+
+<div class="box">
+
+<div class="title">Discount Verification</div>
+
+<div class="subtitle">
+Enter discount verification amount manually.
+</div>
+
+<div class="grid">
+
+<div class="input-box full">
+<label>Discount Amount</label>
+<input type="number" id="discount" placeholder="Enter Discount">
+</div>
+
+</div>
+
+<button class="btn" onclick="processData()">
+Verify Cashback
+</button>
+
+</div>
+
+</section>
+
+<!-- PAGE 4 -->
+
+<section class="page" id="page4">
+
+<div class="box loader-area">
+
+<div class="loader"></div>
+
+<h2 style="font-size:50px;margin-top:30px;">
+Processing Cashback
+</h2>
+
+<p style="
+margin-top:25px;
+color:#cbd5e1;
+line-height:2.2;
+font-size:18px;
+">
+
+Uploading Customer Details...<br>
+Checking Product Verification...<br>
+Calculating Cashback Amount...<br>
+Generating Secure Cashback...
+
+</p>
+
+</div>
+
+</section>
+
+<!-- PAGE 5 -->
+
+<section class="page" id="page5">
+
+<div class="box">
+
+<div class="success">
+
+<h2 style="
+background:linear-gradient(135deg,#22c55e,#3b82f6);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+">
+Congratulations
+</h2>
+
+<p>Cashback Successfully Approved</p>
+
+</div>
+
+<div class="discount-card">
+
+<div style="
+width:120px;
+height:120px;
+margin:auto;
+border-radius:35px;
+background:rgba(255,255,255,0.12);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:55px;
+margin-bottom:25px;
+position:relative;
+z-index:2;
+">
+
+<i class="fa-solid fa-crown"></i>
+
+</div>
+
+<h3>Premium Cashback Approved</h3>
+
+<div class="discount-amount" id="showDiscount">
+₹0
+</div>
+
+<p style="
+margin-top:20px;
+font-size:18px;
+line-height:2;
+color:#dbeafe;
+position:relative;
+z-index:2;
+">
+
+Congratulations! Cashback successfully verified through
+premium YMAE secure verification system.
+
+</p>
+
+</div>
+
+<div class="final-grid">
+
+<div class="detail">
+
+<h4>Customer Details</h4>
+
+<div class="row"><span>Name</span><span id="rname"></span></div>
+<div class="row"><span>Phone</span><span id="rphone"></span></div>
+<div class="row"><span>PAN</span><span id="rpan"></span></div>
+<div class="row"><span>Aadhaar</span><span id="raadhaar"></span></div>
+
+</div>
+
+<div class="detail">
+
+<h4>Product Details</h4>
+
+<div class="row"><span>Product</span><span id="rproduct"></span></div>
+<div class="row"><span>Payment</span><span id="rmrp"></span></div>
+<div class="row"><span>MOP</span><span id="rmop"></span></div>
+<div class="row"><span>Final Price</span><span id="rfinal"></span></div>
+
+</div>
+
+</div>
+
+<div class="offer-box">
+
+<h3>12 HOURS ONLY</h3>
+
+<p style="
+font-size:18px;
+line-height:2.2;
+">
+
+Provided by <b>YMAE Personal Company</b><br><br>
+
+This premium cashback verification has been approved successfully under secure banking protection system.
+
+</p>
+
+</div>
+
+<button class="btn" onclick="goPayment()">
+Successfully Verified
+</button>
+
+</div>
+
+</section>
+
+<!-- PAGE 6 -->
+
+<section class="page" id="page6">
+
+<div class="box loader-area">
+
+<div class="loader"></div>
+
+<h2 style="
+font-size:55px;
+color:#4ade80;
+margin-top:30px;
+">
+
+Payment Processing
+
+</h2>
+
+<p style="
+margin-top:25px;
+color:#cbd5e1;
+line-height:2.2;
+font-size:18px;
+">
+
+Connecting Secure Banking System...<br>
+Verifying Cashback Transfer...<br>
+Activating Premium Rewards...<br>
+Finalizing Payment Gateway...
+
+</p>
+
+</div>
+
+</section>
+
+<!-- PAGE 7 -->
+
+<section class="page" id="page7">
+
+<div class="box">
+
+<div class="success">
+
+<div style="
+width:170px;
+height:170px;
+margin:auto;
+border-radius:45px;
+background:linear-gradient(135deg,#1e40af,#2563eb,#7c3aed);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:75px;
+box-shadow:0 30px 60px rgba(37,99,235,0.45);
+">
+
+<i class="fa-solid fa-building-columns"></i>
+
+</div>
+
+<h2 style="
+margin-top:35px;
+background:linear-gradient(135deg,#22c55e,#3b82f6);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+">
+Successfully Verified
+</h2>
+
+<p style="
+margin-top:18px;
+font-size:20px;
+line-height:2.2;
+">
+
+Your cashback verification and secure banking transaction completed successfully.
+
+</p>
+
+</div>
+
+<!-- HDFC CARD -->
+
+<div style="
+margin-top:40px;
+padding:45px;
+border-radius:40px;
+background:linear-gradient(135deg,#1e40af,#2563eb,#7c3aed);
+box-shadow:0 30px 65px rgba(37,99,235,0.45);
+text-align:center;
+">
+
+<div style="
+width:140px;
+height:140px;
+margin:auto;
+border-radius:38px;
+background:rgba(255,255,255,0.12);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:65px;
+margin-bottom:30px;
+">
+
+<i class="fa-solid fa-landmark"></i>
+
+</div>
+
+<h1 style="
+font-size:65px;
+font-weight:900;
+letter-spacing:2px;
+">
+
+HDFC BANK
+
+</h1>
+
+<p style="
+margin-top:18px;
+font-size:20px;
+line-height:2;
+color:#dbeafe;
+">
+
+Premium Banking Security Enabled
+
+</p>
+
+<div class="final-grid">
+
+<div class="detail">
+<h4>Security</h4>
+<div class="row"><span>Status</span><span>Protected</span></div>
+<div class="row"><span>Gateway</span><span>Connected</span></div>
+<div class="row"><span>Fraud Shield</span><span>Enabled</span></div>
+</div>
+
+<div class="detail">
+<h4>Transaction</h4>
+<div class="row"><span>Cashback</span><span>Transferred</span></div>
+<div class="row"><span>Payment</span><span>Success</span></div>
+<div class="row"><span>Rewards</span><span>Activated</span></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="offer-box">
+
+<h3>Payment Successfully Processed</h3>
+
+<p style="
+font-size:18px;
+line-height:2.2;
+">
+
+Your cashback amount has been processed successfully through secure HDFC banking verification system provided by <b>YMAE Personal Company</b>.
+
+All premium cashback rewards and banking features are activated successfully.
+
+</p>
+
+</div>
+
+<div class="final-grid">
+
+<button class="btn" onclick="downloadReceipt()">
+Download Receipt
+</button>
+
+<button class="btn" onclick="restartSystem()">
+New Verification
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<script>
+
+function showPage(id){
+
+document.querySelectorAll('.page').forEach(page=>{
+page.classList.remove('active');
+});
+
+document.getElementById(id).classList.add('active');
+
+window.scrollTo(0,0);
+
+}
+
+/* ENTER NEXT */
+
+document.addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+const active=document.querySelector(".page.active");
+
+if(active.id==="page1"){
+goProduct();
+}
+
+else if(active.id==="page2"){
+goCode();
+}
+
+else if(active.id==="page3"){
+processData();
+}
+
+}
+
+});
+
+/* PAGE 1 */
+
+function goProduct(){
+
+const name=document.getElementById("name").value;
+const phone=document.getElementById("phone").value;
+const aadhaar=document.getElementById("aadhaar").value;
+
+if(name==="" || phone==="" || aadhaar===""){
+alert("Fill required details");
+return;
+}
+
+if(!document.getElementById("agree").checked){
+alert("Accept agreement");
+return;
+}
+
+showPage("page2");
+
+}
+
+/* PAGE 2 */
+
+function goCode(){
+
+const product=document.getElementById("product").value;
+const mop=document.getElementById("mop").value;
+
+if(product==="" || mop===""){
+alert("Fill product details");
+return;
+}
+
+showPage("verifyPage");
+
+setTimeout(()=>{
+
+showPage("page3");
+
+},10000);
+
+}
+
+/* PAGE 3 */
+
+function processData(){
+
+const discount=parseInt(document.getElementById("discount").value)||0;
+
+showPage("page4");
+
+setTimeout(()=>{
+
+document.getElementById("showDiscount").innerText="₹"+discount;
+
+document.getElementById("rname").innerText=document.getElementById("name").value;
+
+document.getElementById("rphone").innerText=document.getElementById("phone").value;
+
+document.getElementById("rpan").innerText=document.getElementById("pan").value || "N/A";
+
+document.getElementById("raadhaar").innerText=document.getElementById("aadhaar").value;
+
+document.getElementById("rproduct").innerText=document.getElementById("product").value;
+
+const mop=parseInt(document.getElementById("mop").value)||0;
+
+const finalPrice=Math.max(0,mop-discount);
+
+document.getElementById("rmrp").innerText=document.getElementById("cash").value;
+
+document.getElementById("rmop").innerText="₹"+mop;
+
+document.getElementById("rfinal").innerText="₹"+finalPrice;
+
+showPage("page5");
+
+},2500);
+
+}
+
+/* PAGE 6 */
+
+function goPayment(){
+
+showPage("page6");
+
+setTimeout(()=>{
+
+showPage("page7");
+
+},2000);
+
+}
+
+/* EXTRA */
+
+function downloadReceipt(){
+
+const data={
+
+name:document.getElementById("name").value,
+
+phone:document.getElementById("phone").value,
+
+product:document.getElementById("product").value,
+
+cashback:document.getElementById("discount").value,
+
+mop:document.getElementById("mop").value,
+
+total:(parseInt(document.getElementById("mop").value)||0)
+-
+(parseInt(document.getElementById("discount").value)||0),
+
+time:new Date().toLocaleString()
+
+};
+
+let receipts=JSON.parse(localStorage.getItem("ymae_receipts")) || [];
+
+receipts.push(data);
+
+localStorage.setItem("ymae_receipts",JSON.stringify(receipts));
+
+alert("Receipt Downloaded Successfully");
+
+}
+
+</script>
+
 </body>
 </html>
