@@ -1,65 +1,650 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>YMAE Settings</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Settings</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
 body{
-font-family:sans-serif;
-background:#020617;
+background:#0f172a;
 color:white;
-padding:20px;
+min-height:100vh;
 }
-.container{
-max-width:700px;
-margin:auto;
+
+.header{
+padding:22px;
+font-size:30px;
+font-weight:700;
 background:#111827;
-padding:30px;
-border-radius:25px;
+position:sticky;
+top:0;
+z-index:100;
+box-shadow:0 5px 15px rgba(0,0,0,.4);
 }
-.setting{
-background:#1e293b;
-padding:20px;
-border-radius:18px;
-margin-top:20px;
+
+.container{
+padding:18px;
+}
+
+.section{
+background:#111827;
+border-radius:22px;
+padding:18px;
+margin-bottom:18px;
+box-shadow:0 0 20px rgba(0,0,0,.3);
+}
+
+.section-title{
+font-size:22px;
+font-weight:700;
+margin-bottom:16px;
+}
+
+.setting-item{
 display:flex;
 justify-content:space-between;
 align-items:center;
+padding:16px 12px;
+background:#1e293b;
+border-radius:16px;
+margin-bottom:12px;
 }
-select,input{
-padding:12px;
+
+.setting-left{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.setting-left i{
+font-size:22px;
+color:#60a5fa;
+}
+
+.setting-left h3{
+font-size:16px;
+margin-bottom:3px;
+}
+
+.setting-left p{
+font-size:12px;
+opacity:.7;
+}
+
+.switch{
+width:50px;
+height:26px;
+position:relative;
+}
+
+.switch input{
+display:none;
+}
+
+.slider{
+position:absolute;
+cursor:pointer;
+background:#475569;
+border-radius:50px;
+top:0;
+left:0;
+right:0;
+bottom:0;
+transition:.3s;
+}
+
+.slider:before{
+content:'';
+position:absolute;
+height:20px;
+width:20px;
+left:3px;
+top:3px;
+background:white;
+border-radius:50%;
+transition:.3s;
+}
+
+input:checked + .slider{
+background:#2563eb;
+}
+
+input:checked + .slider:before{
+transform:translateX(24px);
+}
+
+.input-box{
+margin-top:12px;
+}
+
+.input-box input,
+.input-box select{
+width:100%;
+padding:14px;
+background:#0f172a;
 border:none;
-border-radius:12px;
+border-radius:14px;
+color:white;
+outline:none;
+margin-top:8px;
 }
+
+.btn{
+width:100%;
+padding:15px;
+border:none;
+border-radius:15px;
+background:#2563eb;
+color:white;
+font-size:16px;
+font-weight:700;
+margin-top:14px;
+cursor:pointer;
+}
+
+.btn-danger{
+background:#dc2626;
+}
+
+.color-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-top:14px;
+}
+
+.color-card{
+background:#1e293b;
+padding:14px;
+border-radius:16px;
+}
+
+.color-card input{
+width:100%;
+height:50px;
+border:none;
+margin-top:8px;
+}
+
 </style>
 </head>
 <body>
+
+<div class="header">
+<i class="fa-solid fa-gear"></i> Advanced Settings
+</div>
+
 <div class="container">
-<h1>YMAE Settings</h1>
-<div class="setting">
-<span>Theme Mode</span>
-<select>
-<option>Dark</option>
-<option>Light</option>
-</select>
+
+<div class="section">
+<div class="section-title">Master Settings Security</div>
+
+<div class="input-box">
+<label>Settings Panel Password</label>
+<input type="password" id="settingsPassword" placeholder="Create Settings Password">
 </div>
-<div class="setting">
-<span>Notification</span>
-<input type="checkbox" checked>
+
+<div class="input-box">
+<label>Change Settings Password</label>
+<input type="password" id="newSettingsPassword" placeholder="New Password">
 </div>
-<div class="setting">
-<span>Profile Visibility</span>
-<select>
-<option>Private</option>
-<option>Public</option>
-</select>
+
+<button class="btn" onclick="saveSettingsPassword()">Save Settings Password</button>
+<button class="btn btn-danger" onclick="removeSettingsPassword()">Remove Password</button>
 </div>
-<div class="setting">
-<span>Portal Security</span>
-<select>
-<option>High</option>
-<option>Normal</option>
-</select>
+
+<div class="section">
+<div class="section-title">Pages Password Protection</div>
+
+<div class="setting-item" onclick="openPanel('offerPanel')">
+<div class="setting-left">
+<i class="fa-solid fa-gift"></i>
+<div>
+<h3>Offer HTML Settings</h3>
+<p>Open Offer Security & Features</p>
 </div>
 </div>
+<i class="fa-solid fa-angle-right"></i>
+</div>
+
+<div class="setting-item" onclick="openPanel('cashPanel')">
+<div class="setting-left">
+<i class="fa-solid fa-wallet"></i>
+<div>
+<h3>Cashback HTML Settings</h3>
+<p>Open Cashback Security & Features</p>
+</div>
+</div>
+<i class="fa-solid fa-angle-right"></i>
+</div>
+
+<div class="setting-item" onclick="openPanel('emiPanel')">
+<div class="setting-left">
+<i class="fa-solid fa-credit-card"></i>
+<div>
+<h3>EMI HTML Settings</h3>
+<p>Open EMI Security & Features</p>
+</div>
+</div>
+<i class="fa-solid fa-angle-right"></i>
+</div>
+
+<div class="setting-item" onclick="openPanel('adminPanel')">
+<div class="setting-left">
+<i class="fa-solid fa-user-shield"></i>
+<div>
+<h3>Admin HTML Settings</h3>
+<p>Open Admin Security & Features</p>
+</div>
+</div>
+<i class="fa-solid fa-angle-right"></i>
+</div>
+
+<button class="btn" onclick="savePasswords()">Save All Settings</button>
+<button class="btn btn-danger" onclick="removePasswords()">Remove All Passwords</button>
+
+<!-- Offer Panel -->
+<div id="offerPanel" style="display:none;margin-top:20px;background:#0f172a;padding:15px;border-radius:20px;">
+<h2>Offer HTML Controls</h2>
+<input type="password" id="offerPass" placeholder="Offer Password" style="width:100%;padding:14px;margin-top:10px;border:none;border-radius:14px;background:#1e293b;color:#fff;">
+<input type="text" id="offerTitle" placeholder="Offer Page Title" style="width:100%;padding:14px;margin-top:10px;border:none;border-radius:14px;background:#1e293b;color:#fff;">
+<button class="btn" onclick="saveOfferSettings()">Save Offer Settings</button>
+</div>
+
+<!-- Cashback Panel -->
+<div id="cashPanel" style="display:none;margin-top:20px;background:#0f172a;padding:15px;border-radius:20px;">
+<h2>Cashback HTML Controls</h2>
+<input type="password" id="cashPass" placeholder="Cashback Password" style="width:100%;padding:14px;margin-top:10px;border:none;border-radius:14px;background:#1e293b;color:#fff;">
+<input type="text" id="cashTitle" placeholder="Cashback Page Title" style="width:100%;padding:14px;margin-top:10px;border:none;border-radius:14px;background:#1e293b;color:#fff;">
+<button class="btn" onclick="saveCashSettings()">Save Cashback Settings</button>
+</div>
+
+<!-- EMI Panel -->
+<div id="emiPanel" style="display:none;margin-top:20px;background:#0f172a;padding:15px;border-radius:20px;">
+<h2>EMI HTML Controls</h2>
+<input type="password" id="emiPass" placeholder="EMI Password" style="width:100%;padding:14px;margin-top:10px;border:none;border-radius:14px;background:#1e293b;color:#fff;">
+<input type="text" id="emiTitle" placeholder="EMI Page Title" style="width:100%;padding:14px;margin-top:10px;border:none;border-radius:14px;background:#1e293b;color:#fff;">
+<button class="btn" onclick="saveEmiSettings()">Save EMI Settings</button>
+</div>
+
+<!-- Admin Panel -->
+<div id="adminPanel" style="display:none;margin-top:20px;background:#0f172a;padding:15px;border-radius:20px;">
+<h2>Admin HTML Controls</h2>
+<input type="password" id="adminPass" placeholder="Admin Password" style="width:100%;padding:14px;margin-top:10px;border:none;border-radius:14px;background:#1e293b;color:#fff;">
+<input type="text" id="adminTitle" placeholder="Admin Page Title" style="width:100%;padding:14px;margin-top:10px;border:none;border-radius:14px;background:#1e293b;color:#fff;">
+<button class="btn" onclick="saveAdminSettings()">Save Admin Settings</button>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">Background Customizer</div>
+
+<div class="color-grid">
+<div class="color-card">
+Offer HTML
+<input type="color" id="offerColor">
+</div>
+
+<div class="color-card">
+Cash Back HTML
+<input type="color" id="cashColor">
+</div>
+
+<div class="color-card">
+EMI HTML
+<input type="color" id="emiColor">
+</div>
+
+<div class="color-card">
+Admin HTML
+<input type="color" id="adminColor">
+</div>
+</div>
+
+<button class="btn" onclick="saveColors()">Save Backgrounds</button>
+</div>
+
+<div class="section">
+<div class="section-title">40+ Premium Features</div>
+
+<div id="features"></div>
+</div>
+
+</div>
+
+<script>
+
+const features=[
+'Dark Mode','Glass UI','Live Notification','Realtime Sync','Quick Login','Fast Loading','Premium Theme','Animated UI','Security Lock','Device Sync',
+'Cloud Backup','Sidebar Menu','Popup Alerts','Admin Shield','Encrypted Mode','Biometric Style','Offer Protection','EMI Lock','Cashback Lock','Admin Lock',
+'Gradient Background','Fullscreen Mode','Custom Fonts','Floating Menu','Status Bar','Notification Badge','Auto Refresh','Smart Loading','Theme Store','Fingerprint UI',
+'Android Style','Blur Effect','App Sound','Custom Icons','Auto Save','Secure Storage','Page Animation','Analytics','User Tracking','Modern Cards',
+'Advanced Backend','Privacy Shield','Quick Settings','Touch Effect','Color Sync','Rainbow Theme','Night Shield','Auto Theme','Wallpaper Mode','Premium Icons',
+'Font Booster','Edge Lighting','Neon Border','Music Effect','Battery Saver','Auto Cleanup','Live Clock','Page Lock','Touch Animation','Ultra Speed',
+'Security Scan','Auto Sync','Smart Theme','Custom Cursor','Glow Buttons','Quick Panel','Privacy Lock','Background Motion','Transparent UI','Advanced Theme',
+'Gaming Mode','Luxury Mode','Cyber Mode','Auto Protection','Premium Lock','Modern Layout','Hover Effect','Button Effects','Auto Recovery','Performance Boost',
+'Live Theme','Interactive UI','Smart Security','Realtime Colors','Floating Settings','Motion Blur','Card Shadow','HD Interface','Ultra Animation','Theme Backup',
+'Auto Connect','Safe Mode','Secure Touch','Quick Access','Custom Dashboard','Advanced Controls','One Tap Save','Multi Protection','Premium Security','Dynamic UI'
+];
+
+let html='';
+
+features.forEach((feature,index)=>{
+html+=`
+<div class="setting-item">
+<div class="setting-left">
+<i class="fa-solid fa-sliders"></i>
+<div>
+<h3>${feature}</h3>
+<p>Enable ${feature}</p>
+</div>
+</div>
+<label class="switch">
+<input type="checkbox" id="feature_${index}" onchange="saveFeature(${index},this.checked);applyFeature('${feature}',this.checked)">
+<span class="slider"></span>
+</label>
+</div>
+`;
+});
+
+document.getElementById('features').innerHTML=html;
+
+// Load Saved Features
+
+const savedFeatures=JSON.parse(localStorage.getItem('premiumFeatures')) || {};
+
+Object.keys(savedFeatures).forEach(key=>{
+const el=document.getElementById('feature_'+key);
+
+if(el){
+el.checked=savedFeatures[key];
+applyFeature(features[key],savedFeatures[key]);
+}
+});
+
+function saveSettingsPassword(){
+
+let pass=document.getElementById('settingsPassword').value || document.getElementById('newSettingsPassword').value;
+
+localStorage.setItem('settingsPanelPassword',pass);
+
+alert('Settings Password Saved');
+}
+
+function removeSettingsPassword(){
+localStorage.removeItem('settingsPanelPassword');
+alert('Settings Password Removed');
+}
+
+function openPanel(id){
+
+const panels=['offerPanel','cashPanel','emiPanel','adminPanel'];
+
+panels.forEach(panel=>{
+document.getElementById(panel).style.display='none';
+});
+
+document.getElementById(id).style.display='block';
+}
+
+function saveOfferSettings(){
+
+const data={
+password:document.getElementById('offerPass').value,
+title:document.getElementById('offerTitle').value
+};
+
+localStorage.setItem('offerSettings',JSON.stringify(data));
+
+alert('Offer Settings Saved');
+}
+
+function saveCashSettings(){
+
+const data={
+password:document.getElementById('cashPass').value,
+title:document.getElementById('cashTitle').value
+};
+
+localStorage.setItem('cashSettings',JSON.stringify(data));
+
+alert('Cashback Settings Saved');
+}
+
+function saveEmiSettings(){
+
+const data={
+password:document.getElementById('emiPass').value,
+title:document.getElementById('emiTitle').value
+};
+
+localStorage.setItem('emiSettings',JSON.stringify(data));
+
+alert('EMI Settings Saved');
+}
+
+function saveAdminSettings(){
+
+const data={
+password:document.getElementById('adminPass').value,
+title:document.getElementById('adminTitle').value
+};
+
+localStorage.setItem('adminSettings',JSON.stringify(data));
+
+alert('Admin Settings Saved');
+}
+
+function savePasswords(){
+
+const data={
+offer:document.getElementById('offerPass').value,
+cash:document.getElementById('cashPass').value,
+emi:document.getElementById('emiPass').value,
+admin:document.getElementById('adminPass').value
+};
+
+localStorage.setItem('securePasswords',JSON.stringify(data));
+
+alert('All Passwords Saved');
+}
+
+function removePasswords(){
+localStorage.removeItem('securePasswords');
+alert('All Passwords Removed');
+}
+
+function saveColors(){
+
+const colors={
+offer:document.getElementById('offerColor').value,
+cash:document.getElementById('cashColor').value,
+emi:document.getElementById('emiColor').value,
+admin:document.getElementById('adminColor').value
+};
+
+localStorage.setItem('pageColors',JSON.stringify(colors));
+
+alert('Colors Saved Successfully');
+}
+
+function saveFeature(index,status){
+
+let data=JSON.parse(localStorage.getItem('premiumFeatures')) || {};
+
+data[index]=status;
+
+localStorage.setItem('premiumFeatures',JSON.stringify(data));
+}
+
+function applyFeature(feature,status){
+
+if(feature==='Dark Mode'){
+document.body.style.background=status ? '#020617' : '#0f172a';
+}
+
+if(feature==='Glass UI'){
+document.querySelectorAll('.section').forEach(el=>{
+el.style.backdropFilter=status ? 'blur(10px)' : 'none';
+});
+}
+
+if(feature==='Animated UI'){
+document.querySelectorAll('.section').forEach(el=>{
+el.style.transition='0.5s';
+el.style.transform=status ? 'scale(1)' : 'scale(0.98)';
+});
+}
+
+if(feature==='Gradient Background'){
+document.body.style.background=status ? 'linear-gradient(135deg,#0f172a,#2563eb,#7c3aed)' : '#0f172a';
+}
+
+if(feature==='Fullscreen Mode' && status){
+if(document.documentElement.requestFullscreen){
+document.documentElement.requestFullscreen();
+}
+}
+
+if(feature==='Blur Effect'){
+document.querySelectorAll('.section').forEach(el=>{
+el.style.backdropFilter=status ? 'blur(18px)' : 'none';
+});
+}
+
+if(feature==='Font Booster'){
+document.body.style.fontSize=status ? '18px' : '16px';
+}
+
+if(feature==='Neon Border'){
+document.querySelectorAll('.section').forEach(el=>{
+el.style.boxShadow=status ? '0 0 20px #38bdf8' : '0 0 20px rgba(0,0,0,.3)';
+});
+}
+
+if(feature==='Luxury Mode'){
+document.querySelectorAll('.section').forEach(el=>{
+el.style.border=status ? '1px solid gold' : 'none';
+});
+}
+
+if(feature==='Cyber Mode'){
+document.body.style.background=status ? '#000' : '#0f172a';
+document.body.style.color=status ? '#00ffcc' : '#fff';
+}
+
+if(feature==='Button Effects'){
+document.querySelectorAll('.btn').forEach(el=>{
+el.style.transform=status ? 'scale(1.03)' : 'scale(1)';
+});
+}
+
+if(feature==='HD Interface'){
+document.body.style.letterSpacing=status ? '0.5px' : '0';
+}
+
+if(feature==='Card Shadow'){
+document.querySelectorAll('.section').forEach(el=>{
+el.style.boxShadow=status ? '0 0 35px rgba(37,99,235,.7)' : '0 0 20px rgba(0,0,0,.3)';
+});
+}
+
+if(feature==='Transparent UI'){
+document.querySelectorAll('.section').forEach(el=>{
+el.style.background=status ? 'rgba(17,24,39,.6)' : '#111827';
+});
+}
+
+if(feature==='Rainbow Theme'){
+document.body.style.background=status ? 'linear-gradient(90deg,red,orange,yellow,green,blue,indigo,violet)' : '#0f172a';
+}
+
+if(feature==='Live Clock' && status){
+setInterval(()=>{
+document.title=new Date().toLocaleTimeString();
+},1000);
+}
+
+if(feature==='Touch Animation'){
+document.querySelectorAll('.btn').forEach(btn=>{
+btn.style.transition='0.3s';
+});
+}
+
+if(feature==='Premium Icons'){
+document.querySelectorAll('i').forEach(el=>{
+el.style.color=status ? '#facc15' : '#60a5fa';
+});
+}
+
+if(feature==='Night Shield'){
+document.body.style.filter=status ? 'brightness(0.8)' : 'brightness(1)';
+}
+
+if(feature==='Glow Buttons'){
+document.querySelectorAll('.btn').forEach(btn=>{
+btn.style.boxShadow=status ? '0 0 20px #2563eb' : 'none';
+});
+}
+
+if(feature==='Motion Blur'){
+document.body.style.backdropFilter=status ? 'blur(4px)' : 'none';
+}
+
+if(feature==='Floating Settings'){
+document.querySelector('.header').style.position=status ? 'fixed' : 'sticky';
+document.querySelector('.container').style.marginTop=status ? '90px' : '0';
+}
+
+if(feature==='Dynamic UI'){
+document.querySelectorAll('.setting-item').forEach(el=>{
+el.style.transition='0.4s';
+});
+}
+}
+
+const settingPassword=localStorage.getItem('settingsPanelPassword');
+
+if(settingPassword){
+
+let ask=prompt('Enter Settings Password');
+
+if(ask!==settingPassword){
+document.body.innerHTML='<h1 style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:40px;">Access Denied</h1>';
+}
+}
+
+// Disable Right Click
+
+document.addEventListener('contextmenu',e=>e.preventDefault());
+
+// Disable Inspect Keys
+
+document.onkeydown=function(e){
+if(e.keyCode==123){
+return false;
+}
+if(e.ctrlKey && e.shiftKey && e.keyCode==73){
+return false;
+}
+if(e.ctrlKey && e.shiftKey && e.keyCode==74){
+return false;
+}
+if(e.ctrlKey && e.keyCode==85){
+return false;
+}
+}
+
+</script>
+
 </body>
 </html>
